@@ -6,7 +6,7 @@ public class InsertionSort implements Sort {
 
     @Override
     public void sort(int[] numbersArr) {
-        binaryInsertionSort(numbersArr, 0, numbersArr.length - 1);
+        insertionSort(numbersArr, 0, numbersArr.length - 1);
     }
 
     public void insertionSort(int[] numbersArr, int start, int end) {
@@ -21,7 +21,7 @@ public class InsertionSort implements Sort {
     public void binaryInsertionSort(int[] numbersArr, int start, int end) {
         for (int i = start + 1; i <= end; i++) {
             int number = numbersArr[i];
-            int index = Math.abs(Arrays.binarySearch(numbersArr, 0, i, number) + 1);
+            int index = Math.abs(Arrays.binarySearch(numbersArr, start, i, number) + 1);
             System.arraycopy(numbersArr, index, numbersArr, index + 1, i - index);
             numbersArr[index] = number;
         }
