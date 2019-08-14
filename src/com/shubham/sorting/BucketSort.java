@@ -1,5 +1,6 @@
 package com.shubham.sorting;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,13 +20,7 @@ public class BucketSort implements Sort {
             int location = 0;
             if (number != 0)
                 location = (int) Math.log10(number);
-            int index = 0;
-            for (int x : bucket[location]) {
-                if (x < number)
-                    index++;
-                else
-                    break;
-            }
+            int index = Math.abs(Collections.binarySearch(bucket[location], number) + 1);
             bucket[location].add(index, number);
         }
         int i = 0;

@@ -1,17 +1,16 @@
 package com.shubham;
 
+import java.io.BufferedWriter;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Random;
 
 import com.shubham.searching.SearchExecutor;
 import com.shubham.searching.SearchTypes;
+import com.shubham.utils.FileUtils;
 import com.shubham.utils.RandomGenerator;
 import com.shubham.utils.TimingExtension;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -23,12 +22,29 @@ class SearchTests {
     private static int[] numberArr;
     private static Random random;
 
+    private static BufferedWriter fileWriter;
+
     @BeforeAll
     static void initSetUp() {
+        fileWriter = FileUtils.getFileWriter("resources/Search Test Cases.txt");
+    }
+
+    @AfterAll
+    static void done() {
+        FileUtils.closeWriter(fileWriter);
+    }
+
+    @BeforeEach
+    void setUp() {
         random = new Random();
-        numberArr = RandomGenerator.getArrayOfRandomIntegers(10);
+        numberArr = RandomGenerator.getArrayOfRandomIntegers();
         Arrays.sort(numberArr);
-        //System.out.println(Arrays.toString(numberArr));
+        FileUtils.appendWithNewLine(fileWriter, Arrays.toString(numberArr));
+        FileUtils.appendWithNewLine(fileWriter, new StringBuilder("" + numberArr[0])
+                .append(", " + numberArr[numberArr.length >>> 1])
+                .append(", " + numberArr[numberArr.length - 1])
+                .append(", " + numberArr[random.nextInt(numberArr.length)])
+                .append(", " + Integer.MAX_VALUE).toString());
     }
 
     @DisplayName("Testing Search Types")
@@ -48,10 +64,9 @@ class SearchTests {
         }
     }
 
-    @RepeatedTest(value = 1000, name = "{displayName} {currentRepetition}")
+    @RepeatedTest(value = 100, name = "{displayName} {currentRepetition}")
     @DisplayName("Search Types Testing")
     void sortTestCases() {
-        initSetUp();
         for (SearchTypes searchType : SearchTypes.values()) {
             System.out.println("Performing " + searchType + " Test Cases...");
             searchTestCases(searchType);

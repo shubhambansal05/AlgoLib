@@ -1,15 +1,14 @@
 package com.shubham;
 
+import java.io.BufferedWriter;
 import java.util.Arrays;
 
 import com.shubham.sorting.SortExecutor;
 import com.shubham.sorting.SortTypes;
+import com.shubham.utils.FileUtils;
 import com.shubham.utils.RandomGenerator;
 import com.shubham.utils.TimingExtension;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -22,9 +21,21 @@ class SortTests {
     private static int[] sortedArr;
     private static int[] reverseSortedArr;
 
+    private static BufferedWriter fileWriter;
+
     @BeforeAll
     static void initSetUp() {
-        numberArr = RandomGenerator.getArrayOfRandomPositiveIntegers(1000, 10000);
+        fileWriter = FileUtils.getFileWriter("resources/Sort Test Cases.txt");
+    }
+
+    @AfterAll
+    static void done() {
+        FileUtils.closeWriter(fileWriter);
+    }
+
+    @BeforeEach
+    void setUp() {
+        numberArr = RandomGenerator.getArrayOfRandomPositiveIntegers();
         sortedArr = Arrays.copyOf(numberArr, numberArr.length);
         Arrays.parallelSort(sortedArr);
         reverseSortedArr = new int[sortedArr.length];
@@ -33,6 +44,7 @@ class SortTests {
             reverseSortedArr[i] = sortedArr[ni];
             reverseSortedArr[ni] = sortedArr[i];
         }
+        FileUtils.appendWithNewLine(fileWriter, Arrays.toString(numberArr));
     }
 
     @DisplayName("Testing Sort Types")
@@ -49,10 +61,9 @@ class SortTests {
         performTest(sortType, reverseSortedArr, "Worst");
     }
 
-    @RepeatedTest(value = 1000, name = "{displayName} {currentRepetition}")
+    @RepeatedTest(value = 500, name = "{displayName} {currentRepetition}")
     @DisplayName("Sort Types Testing")
     void sortTestCases() {
-        initSetUp();
         for (SortTypes sortType : SortTypes.values()) {
             System.out.println("Performing " + sortType + " Test Cases...");
             sortTestCases(sortType);
@@ -70,5 +81,4 @@ class SortTests {
         }
         Assertions.assertArrayEquals(sortedArr, actualArr, testCaseName + " test case is failed.");
     }
-
 }

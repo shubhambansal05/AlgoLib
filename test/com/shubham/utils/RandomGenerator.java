@@ -4,14 +4,15 @@ import java.util.Random;
 
 public class RandomGenerator {
 
-    private static final int MAX_NUMBER_ARRAY_SIZE = 100000;
+    private static final int MAX_NUMBER_ARRAY_SIZE = 1000;
+    private static final int MAX_NUMBER = 10000;
 
     public static int[] getArrayOfRandomIntegers() {
         return getArrayOfRandomIntegers(getRandomSizeOfArray());
     }
 
     public static int[] getArrayOfRandomIntegers(int size) {
-        return getArrayOfRandomIntegers(size, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        return getArrayOfRandomIntegers(size, Integer.MIN_VALUE, MAX_NUMBER);
     }
 
     public static int[] getArrayOfRandomIntegers(int size, int minNumber, int maxNumber) {
@@ -23,23 +24,11 @@ public class RandomGenerator {
     }
 
     public static int[] getArrayOfRandomPositiveIntegers(int size) {
-        return getArrayOfRandomPositiveIntegers(size, Integer.MAX_VALUE);
+        return getArrayOfRandomPositiveIntegers(size, MAX_NUMBER);
     }
 
     public static int[] getArrayOfRandomPositiveIntegers(int size, int maxNumber) {
         return getArrayOfRandomIntegers(size, 0, maxNumber);
-    }
-
-    public static int[] getArrayOfRandomNegativeIntegers() {
-        return getArrayOfRandomNegativeIntegers(getRandomSizeOfArray());
-    }
-
-    public static int[] getArrayOfRandomNegativeIntegers(int size) {
-        return getArrayOfRandomNegativeIntegers(size, Integer.MIN_VALUE);
-    }
-
-    public static int[] getArrayOfRandomNegativeIntegers(int size, int minNumber) {
-        return getArrayOfRandomIntegers(size, minNumber, 0);
     }
 
     private static int getRandomSizeOfArray() {
