@@ -13,13 +13,13 @@ public class Subsets {
     }
 
     private void generateSubsets(int[] set, int start, String path, int subsetLength, int subsetSum, CallbackListener callbackListener) {
-        performAction(callbackListener, "Path = " + path, "Sum = " + subsetSum, "Length = " + subsetLength);
+        performAction(callbackListener, path, subsetSum, subsetLength);
         for (int i = start + 1; i < set.length; i++)
             generateSubsets(set, i, path + "," + i, subsetLength + 1, subsetSum + set[i], callbackListener);
     }
 
-    private void performAction(CallbackListener callbackListener, String... data) {
+    private void performAction(CallbackListener callbackListener, Object... data) {
         if (callbackListener != null)
-            callbackListener.callback(data);
+            callbackListener.callback("Path = " + data[0], "Sum = " + data[1], "Length = " + data[2]);
     }
 }
